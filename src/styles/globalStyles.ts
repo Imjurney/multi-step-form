@@ -26,7 +26,7 @@ export const globalStyles = (theme: Theme) => css`
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.6;
+    font-smooth: never;
     background-color: ${theme.colors.background};
     color: ${theme.colors.gray[800]};
   }
@@ -102,11 +102,6 @@ export const globalStyles = (theme: Theme) => css`
     }
   }
 
-  *:focus {
-    outline: 2px solid ${theme.colors.primary};
-    outline-offset: 2px;
-  }
-
   ::selection {
     background-color: ${theme.colors.brand[100]};
     color: ${theme.colors.brand[900]};
@@ -127,5 +122,14 @@ export const globalStyles = (theme: Theme) => css`
     body {
       font-size: 16px;
     }
+  }
+
+  *:focus {
+    outline: none;
+  }
+
+  *:focus-visible {
+    outline: 2px solid ${theme.colors.primary};
+    outline-offset: 2px;
   }
 `;

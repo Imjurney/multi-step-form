@@ -33,6 +33,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.8.1
         version: 19.8.1
+      '@emotion/babel-plugin':
+        specifier: ^11.13.5
+        version: 11.13.5
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.3.1

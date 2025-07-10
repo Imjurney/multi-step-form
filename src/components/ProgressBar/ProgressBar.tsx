@@ -1,13 +1,11 @@
 import { css } from '@emotion/react';
 import { colors } from '../../styles';
-import { calcRem, mediaQueries, typography } from '@/styles/theme';
+import { calcRem, typography } from '@/styles/theme';
 
 const progressBarStyle = css`
   margin-bottom: 32px;
 
-  ${mediaQueries.mobile} {
-    font-size: ${calcRem(24)}; /* 24px */
-  }
+  font-size: ${calcRem(24)}; /* 24px */
 `;
 
 const progressLabelStyle = css`

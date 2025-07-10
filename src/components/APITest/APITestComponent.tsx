@@ -1,22 +1,26 @@
 import { useState } from 'react';
 import ky from 'ky';
 import styled from '@emotion/styled';
-
-interface APIResponse {
-  status: number;
-  data: unknown;
-  error?: string;
-}
+import { mediaQueries } from '../../styles';
 
 const Container = styled.div`
-  padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
+  background: ${({ theme }) => theme.colors.gray[100]};
+`;
+
+const ArticleContainer = styled.article`
+  display: grid;
+
+  ${mediaQueries.tablet} {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+  gap: 1rem;
 `;
 
 const Section = styled.div`
   margin-bottom: 2rem;
-  padding: 1.5rem;
+  width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.gray[200]};
   border-radius: 8px;
   background: ${({ theme }) => theme.colors.surface};
@@ -43,19 +47,7 @@ const Button = styled.button`
   }
 `;
 
-const ResponseBox = styled.pre`
-  background: ${({ theme }) => theme.colors.gray[50]};
-  padding: 1rem;
-  border-radius: 6px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[200]};
-  margin-top: 1rem;
-  overflow-x: auto;
-  font-size: 0.875rem;
-  white-space: pre-wrap;
-  max-height: 300px;
-  overflow-y: auto;
-  color: red;
-`;
+const ResponseBox = styled.div``;
 
 const Input = styled.input`
   width: 100%;
@@ -73,13 +65,11 @@ const Input = styled.input`
 `;
 
 export const APITestComponent = () => {
-  const [response, setResponse] = useState<APIResponse | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [response, setResponse] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchType, setSearchType] = useState<'Title' | 'Author' | 'Keyword'>(
-    'Keyword'
-  );
 
   const handleAPICall = async (
     url: string,
@@ -137,11 +127,11 @@ export const APITestComponent = () => {
       // 알라딘 Open API 호출 (CORS 우회를 위해 로컬 API 라우트 사용)
       const searchParams = new URLSearchParams({
         query: searchQuery,
-        queryType: searchType,
+        queryType: 'Keyword', // Keyword, ISBN, Author, Publisher
         maxResults: '20',
         start: '1',
         sort: 'Accuracy',
-        cover: 'Big',
+        cover: "Small'", // Small, Medium, Big
       });
 
       handleAPICall(`/api/aladin/search?${searchParams.toString()}`);
@@ -149,11 +139,6 @@ export const APITestComponent = () => {
 
     return (
       <Section>
-        <h3>📚 알라딘 도서 검색 API</h3>
-        <p style={{ marginBottom: '1rem', color: '#666' }}>
-          알라딘 Open API를 사용하여 도서를 검색합니다.
-        </p>
-
         <div style={{ marginBottom: '1rem' }}>
           <label
             style={{
@@ -164,23 +149,6 @@ export const APITestComponent = () => {
           >
             검색 유형:
           </label>
-          <select
-            value={searchType}
-            onChange={e =>
-              setSearchType(e.target.value as 'Title' | 'Author' | 'Keyword')
-            }
-            style={{
-              padding: '0.5rem',
-              border: '1px solid #d4d4d4',
-              borderRadius: '6px',
-              marginBottom: '1rem',
-              fontFamily: 'inherit',
-            }}
-          >
-            <option value='Keyword'>제목+저자 (통합검색)</option>
-            <option value='Title'>제목</option>
-            <option value='Author'>저자</option>
-          </select>
         </div>
 
         <Input
@@ -189,7 +157,6 @@ export const APITestComponent = () => {
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
         />
-        {}
 
         <Button
           onClick={handleBookSearch}
@@ -216,11 +183,6 @@ export const APITestComponent = () => {
 
   return (
     <Container>
-      <h2>🚀 API 테스트 도구</h2>
-      <p style={{ marginBottom: '2rem', color: '#666' }}>
-        ky 라이브러리를 사용한 API 호출 테스트입니다.
-      </p>
-
       {testAladinAPI()}
 
       {/* 로딩 상태 */}
@@ -242,7 +204,7 @@ export const APITestComponent = () => {
           </div>
         </Section>
       )}
-
+      <ArticleContainer></ArticleContainer>
       {/* 응답 결과 */}
       {response && (
         <Section>
@@ -273,7 +235,7 @@ export const APITestComponent = () => {
           )}
 
           <strong>응답 데이터:</strong>
-          <ResponseBox>{JSON.stringify(response.data, null, 2)}</ResponseBox>
+          <ResponseBox></ResponseBox>
         </Section>
       )}
 

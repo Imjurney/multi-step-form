@@ -51,9 +51,6 @@ export const colors = {
   /** @usage 강조 요소, 하이라이트 */
   accent: '#66C2FF',
 
-  /** @usage 메인 페이지 배경 */
-  background: '#FAFBFC',
-
   /** @usage 카드, 모달, 패널 배경 */
   surface: '#F5F7FA',
 
@@ -87,63 +84,16 @@ export const colors = {
  * 모바일 우선(Mobile-first) 접근 방식
  */
 export const mediaQueries = {
-  /** 모바일: 767px 이하 */
-  mobile: '@media (max-width: 767px)',
-
-  /** 태블릿: 768px ~ 1023px */
-  tablet: '@media (min-width: 768px) and (max-width: 1023px)',
-
-  /** 데스크탑: 1024px 이상 */
+  tablet: '@media (min-width: 768px)',
+  /** 데스크탑 이상 (1024px~) */
   desktop: '@media (min-width: 1024px)',
-
-  /** 라지 스크린: 1440px 이상 */
+  /** 라지 스크린 (1440px~) */
   large: '@media (min-width: 1440px)',
 
   /**
    * 모바일 우선 미디어 쿼리 (Mobile-first)
    * @usage 모바일부터 위로 적용
    */
-  up: {
-    /** 768px 이상 (태블릿+) */
-    sm: '@media (min-width: 768px)',
-    /** 1024px 이상 (데스크탑+) */
-    md: '@media (min-width: 1024px)',
-    /** 1440px 이상 (라지+) */
-    lg: '@media (min-width: 1440px)',
-    /** 1920px 이상 (풀HD+) */
-    xl: '@media (min-width: 1920px)',
-  },
-
-  /**
-   * 데스크탑 우선 미디어 쿼리 (Desktop-first)
-   * @usage 데스크탑부터 아래로 적용
-   */
-  down: {
-    /** 1919px 이하 */
-    xl: '@media (max-width: 1919px)',
-    /** 1439px 이하 */
-    lg: '@media (max-width: 1439px)',
-    /** 1023px 이하 (태블릿-) */
-    md: '@media (max-width: 1023px)',
-    /** 767px 이하 (모바일) */
-    sm: '@media (max-width: 767px)',
-  },
-
-  /**
-   * 특정 기기 타겟팅
-   */
-  device: {
-    /** 모바일 전용 */
-    mobileOnly: '@media (max-width: 767px)',
-    /** 태블릿 전용 */
-    tabletOnly: '@media (min-width: 768px) and (max-width: 1023px)',
-    /** 데스크탑 전용 */
-    desktopOnly: '@media (min-width: 1024px) and (max-width: 1439px)',
-    /** 모바일 + 태블릿 */
-    mobileAndTablet: '@media (max-width: 1023px)',
-    /** 태블릿 + 데스크탑 */
-    tabletAndDesktop: '@media (min-width: 768px)',
-  },
 
   /**
    * 기능 기반 미디어 쿼리
@@ -186,13 +136,9 @@ export const commonStyles = {
   container: css`
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 12px;
 
-    ${mediaQueries.up.sm} {
-      padding: 0 24px;
-    }
-
-    ${mediaQueries.down.sm} {
+    ${mediaQueries.tablet} {
       padding: 0 16px;
     }
   `,
@@ -233,11 +179,6 @@ export const commonStyles = {
         transform: none;
       }
     }
-
-    ${mediaQueries.down.sm} {
-      padding: 14px 20px;
-      min-height: 44px;
-    }
   `,
 
   card: css`
@@ -248,11 +189,6 @@ export const commonStyles = {
       0 1px 3px 0 rgba(0, 0, 0, 0.1),
       0 1px 2px 0 rgba(0, 0, 0, 0.06);
     border: 1px solid ${colors.gray[200]};
-
-    ${mediaQueries.down.sm} {
-      padding: 16px;
-      border-radius: 8px;
-    }
   `,
 
   input: css`
@@ -287,11 +223,6 @@ export const commonStyles = {
     /* 애니메이션 감소 선호 시 트랜지션 제거 */
     ${mediaQueries.feature.reducedMotion} {
       transition: none;
-    }
-
-    /* 모바일에서 줌 방지를 위한 최소 폰트 크기 */
-    ${mediaQueries.down.sm} {
-      font-size: 16px; /* iOS 줌 방지 */
     }
   `,
 } as const;
@@ -455,34 +386,4 @@ export const typography = {
       }
     `,
   },
-} as const;
-
-export const responsiveTypography = {
-  /** @usage 히어로 섹션 제목 */
-  hero: css`
-    font-size: ${calcRem(48)}; /* 48px */
-    line-height: 1.1; /* 110% */
-    font-weight: 800;
-    letter-spacing: -0.02em;
-
-    ${mediaQueries.tablet} {
-      font-size: ${calcRem(36)}; /* 36px */
-    }
-
-    ${mediaQueries.mobile} {
-      font-size: ${calcRem(28)}; /* 28px */
-    }
-  `,
-
-  /** @usage 페이지 제목 */
-  pageTitle: css`
-    font-size: ${calcRem(32)}; /* 32px */
-    line-height: 1.2; /* 120% */
-    font-weight: 700;
-    letter-spacing: -0.01em;
-
-    ${mediaQueries.mobile} {
-      font-size: ${calcRem(24)}; /* 24px */
-    }
-  `,
 } as const;

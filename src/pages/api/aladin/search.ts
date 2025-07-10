@@ -43,7 +43,7 @@ export default async function handler(
     maxResults = '20',
     start = '1',
     sort = 'Accuracy',
-    cover = 'Big',
+    cover = "Small'", // Small, Medium, Big
   } = req.query as AladinSearchParams;
 
   if (!query) {
@@ -63,7 +63,6 @@ export default async function handler(
       Version: '20131101',
       Cover: cover,
       Sort: sort,
-      OptResult: 'ebookList,usedList', // 전자책, 중고책 정보 포함
     });
 
     const aladinUrl = `http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?${params.toString()}`;
@@ -94,8 +93,6 @@ export default async function handler(
         salesPoint: book.salesPoint,
         adult: book.adult,
         fixedPrice: book.fixedPrice,
-        seriesInfo: book.seriesInfo,
-        subInfo: book.subInfo,
       })) || [];
 
     return res.status(200).json({

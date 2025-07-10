@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { Layout } from '@/components/Layout/Layout';
+import { APITestComponent } from '@/components/APITest/APITestComponent';
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
       </Head>
 
       <Layout title='독서 목록' subtitle='나의 독서들을 기록해보세요.'>
-        xptm
+        <APITestComponent />
       </Layout>
     </>
   );

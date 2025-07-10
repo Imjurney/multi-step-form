@@ -45,10 +45,13 @@ export const globalStyles = (theme: Theme) => css`
     outline-offset: 2px;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
   input,
   textarea,
   select,
   button {
-    box-sizing: border-box;
   }
 `;

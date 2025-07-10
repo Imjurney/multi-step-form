@@ -1,0 +1,8 @@
+import { BookStatusType } from '../common/book-status';
+
+export interface BookApiResponse {
+  id: string;
+  title: string;
+  status: BookStatusType;
+  // ...기타 API 응답 필드
+}

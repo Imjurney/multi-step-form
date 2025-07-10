@@ -2,6 +2,8 @@ import { useState } from 'react';
 import ky from 'ky';
 import styled from '@emotion/styled';
 import { mediaQueries } from '../../styles';
+import Label from '../Label/Label';
+import { BookStatus } from '../../types/common/book-status';
 
 const Container = styled.div`
   max-width: 800px;
@@ -204,7 +206,12 @@ export const APITestComponent = () => {
           </div>
         </Section>
       )}
-      <ArticleContainer></ArticleContainer>
+      <ArticleContainer>
+        <Label status={BookStatus.WANT_TO_READ} />
+        <Label status={BookStatus.READING} />
+        <Label status={BookStatus.COMPLETED} />
+        <Label status={BookStatus.PAUSED} />
+      </ArticleContainer>
       {/* 응답 결과 */}
       {response && (
         <Section>

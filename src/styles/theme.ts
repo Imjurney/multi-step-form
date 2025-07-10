@@ -75,7 +75,7 @@ export const colors = {
     wantToRead: '#8B5CF6',
     reading: '#0064FF',
     completed: '#10B981',
-    paused: '#737373',
+    paused: '#e5e5e5',
   },
 } as const;
 

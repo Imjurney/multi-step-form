@@ -1,11 +1,12 @@
 import { css } from '@emotion/react';
-import { colors } from '../../styles';
-import { calcRem, typography } from '@/styles/theme';
+import calcRemWithBase from '@/utils/calcRemWithBase';
+import { theme } from '@/styles/index';
+const { colors, typography } = theme;
 
 const progressBarStyle = css`
   margin-bottom: 32px;
 
-  font-size: ${calcRem(24)}; /* 24px */
+  font-size: ${calcRemWithBase(24)}; /* 24px */
 `;
 
 const progressLabelStyle = css`

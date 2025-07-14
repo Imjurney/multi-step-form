@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ky from 'ky';
 import styled from '@emotion/styled';
-import { mediaQueries } from '../../styles';
+import mediaQueries from '../../styles/mediaQueries';
 import Label from '../Label/Label';
 import { BookStatus } from '../../types/common/book-status';
 

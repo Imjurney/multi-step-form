@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
-import { colors, typography, mediaQueries } from '@/styles/theme';
+import { theme } from '@/styles/index';
 import { PropsWithChildren } from 'react';
 import ProgressBar from '@/components/ProgressBar/ProgressBar';
-
+const { colors, mediaQueries, typography } = theme;
 interface LayoutProps {
   currentStep: number;
   totalSteps: number;
@@ -81,7 +81,6 @@ export const Layout = ({
               {subtitle && <p css={subtitleStyle}>{subtitle}</p>}
             </div>
           )}
-
           {children}
         </div>
       </div>
@@ -106,3 +105,6 @@ export const StepLayout = ({
     </Layout>
   );
 };
+
+Layout.displayName = 'Layout';
+StepLayout.displayName = 'StepLayout';

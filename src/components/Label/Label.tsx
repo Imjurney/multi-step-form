@@ -1,6 +1,11 @@
-import type { BookStatusType } from '@/types/common/book-status';
+import {
+  statusLabelMap,
+  type BookStatusType,
+} from '@/types/common/book-status';
 import { css } from '@emotion/react';
-import { typography, colors } from '../../styles/theme';
+import colors from '@/styles/color';
+import typography from '@/styles/typography';
+
 const createLabelStyles = <
   T extends Record<BookStatusType, ReturnType<typeof css>>,
 >(
@@ -33,12 +38,6 @@ const labelCommonStyle = css`
   text-align: center;
   ${typography.caption.sm};
 `;
-const statusLabelMap: Record<BookStatusType, string> = {
-  wantToRead: '읽고 싶은 책',
-  reading: '읽는 중',
-  completed: '읽음',
-  paused: '보류 중',
-};
 
 interface LabelProps {
   status: BookStatusType;
@@ -51,5 +50,7 @@ const Label = ({ status }: LabelProps) => {
     </span>
   );
 };
+
+Label.displayName = 'Label';
 
 export default Label;

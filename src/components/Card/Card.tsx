@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Label from '@/components/Label/Label';
 import { BookStatus } from '@/types/common/book-status';
 import { MdEdit, MdDelete } from 'react-icons/md'; // 추가
-const { colors, typography } = theme;
+const { colors, typography, shadow, mediaQueries } = theme;
 
 const cardListStyle = css`
   display: grid;
@@ -16,30 +16,37 @@ const cardListStyle = css`
 const cardStyle = css`
   position: relative;
   width: 100%;
-  max-width: 230px;
-  min-width: 180px;
-  aspect-ratio: 5/7.5;
+
+  aspect-ratio: 5 / 6;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  ${shadow.lg}
   border: 1px solid ${colors.gray[200]};
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
   margin: 0 auto;
+
+  ${mediaQueries.desktop} {
+    max-width: 230px;
+  }
 `;
 
 const coverStyle = css`
   width: 100%;
-  height: 150px;
+  height: 120px;
   object-fit: cover;
   background: ${colors.gray[100]};
+  ${mediaQueries.desktop} {
+    height: 150px;
+  }
 `;
 
 const figcaptionStyle = css`
   padding: 12px 10px;
   width: 100%;
+  height: 100%;
   text-align: left;
   font-size: 1rem;
   color: ${colors.gray[900]};
@@ -67,11 +74,10 @@ const actionGroupStyle = css`
 `;
 
 const iconButtonStyle = css`
-  background: none;
-  border: none;
   padding: 4px;
   border-radius: 4px;
   cursor: pointer;
+  display: flex;
   color: ${colors.gray[500]};
   ${typography.caption.md}
   transition: background 0.15s;

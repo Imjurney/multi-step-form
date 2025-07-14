@@ -53,5 +53,7 @@ export const globalStyles = (theme: Theme) => css`
   textarea,
   select,
   button {
+    border: none;
+    background: none;
   }
 `;

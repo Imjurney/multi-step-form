@@ -4,9 +4,12 @@ import {
   type BookStatusType,
 } from '@/types/common/book-status';
 import { css } from '@emotion/react';
-import colors from '@/styles/color';
-import typography from '@/styles/typography';
+
 import styled from '@emotion/styled';
+
+import { theme } from '@/styles';
+
+const { colors, typography, shadow } = theme;
 
 interface LabelBaseProps {
   status: BookStatusType;
@@ -74,6 +77,7 @@ const labelCommonStyle = css`
   border-radius: 16px;
   text-align: center;
   ${typography.caption.sm};
+  ${shadow.md};
 `;
 
 const LabelPosition = styled.span<{

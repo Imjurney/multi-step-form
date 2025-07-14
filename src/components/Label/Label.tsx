@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import {
   statusLabelMap,
   type BookStatusType,
@@ -5,6 +6,42 @@ import {
 import { css } from '@emotion/react';
 import colors from '@/styles/color';
 import typography from '@/styles/typography';
+import styled from '@emotion/styled';
+
+interface LabelBaseProps {
+  status: BookStatusType;
+  isAbsolute: boolean;
+}
+
+type Vertical =
+  | { top?: string; bottom?: never }
+  | { top?: never; bottom?: string }
+  | {};
+
+type Horizontal =
+  | { left?: string; right?: never }
+  | { left?: never; right?: string }
+  | {};
+
+type LabelProps = LabelBaseProps & Vertical & Horizontal;
+
+const Label = ({ status, isAbsolute, ...rest }: LabelProps) => {
+  const { top, bottom, left, right } =
+    (rest as keyof Vertical & Horizontal) || {};
+
+  return (
+    <LabelPosition
+      css={[labelCommonStyle, labelStyles[status]]}
+      $isAbsolute={isAbsolute}
+      $top={isAbsolute ? top : undefined}
+      $bottom={isAbsolute ? bottom : undefined}
+      $left={isAbsolute ? left : undefined}
+      $right={isAbsolute ? right : undefined}
+    >
+      {statusLabelMap[status]}
+    </LabelPosition>
+  );
+};
 
 const createLabelStyles = <
   T extends Record<BookStatusType, ReturnType<typeof css>>,
@@ -39,17 +76,19 @@ const labelCommonStyle = css`
   ${typography.caption.sm};
 `;
 
-interface LabelProps {
-  status: BookStatusType;
-}
-
-const Label = ({ status }: LabelProps) => {
-  return (
-    <span css={[labelCommonStyle, labelStyles[status]]}>
-      {statusLabelMap[status]}
-    </span>
-  );
-};
+const LabelPosition = styled.span<{
+  $isAbsolute: boolean;
+  $top?: string;
+  $bottom?: string;
+  $left?: string;
+  $right?: string;
+}>`
+  ${({ $isAbsolute }) => $isAbsolute && `position: absolute;`}
+  ${({ $top }) => $top && `top: ${$top};`}
+  ${({ $bottom }) => $bottom && `bottom: ${$bottom};`}
+  ${({ $left }) => $left && `left: ${$left};`}
+  ${({ $right }) => $right && `right: ${$right};`}
+`;
 
 Label.displayName = 'Label';
 

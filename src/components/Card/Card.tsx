@@ -1,16 +1,20 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles';
 import Image from 'next/image';
+import Label from '@/components/Label/Label';
+import { BookStatus } from '@/types/common/book-status';
+import { MdEdit, MdDelete } from 'react-icons/md'; // 추가
+const { colors, typography } = theme;
 
 const cardListStyle = css`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
   width: 100%;
-  padding: 16px 0;
 `;
 
 const cardStyle = css`
+  position: relative;
   width: 100%;
   max-width: 230px;
   min-width: 180px;
@@ -18,7 +22,7 @@ const cardStyle = css`
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid ${theme.colors.gray[200]};
+  border: 1px solid ${colors.gray[200]};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,40 +32,67 @@ const cardStyle = css`
 
 const coverStyle = css`
   width: 100%;
-  height: 120px;
+  height: 150px;
   object-fit: cover;
-  background: ${theme.colors.gray[100]};
+  background: ${colors.gray[100]};
 `;
 
 const figcaptionStyle = css`
-  padding: 12px 10px 10px 10px;
+  padding: 12px 10px;
   width: 100%;
   text-align: left;
   font-size: 1rem;
-  color: ${theme.colors.gray[900]};
+  color: ${colors.gray[900]};
 `;
 
 const titleStyle = css`
   font-weight: 700;
   font-size: 1.05rem;
   margin-bottom: 4px;
-  color: ${theme.colors.gray[900]};
+  color: ${colors.gray[900]};
 `;
 
 const authorStyle = css`
   font-size: 0.95rem;
-  color: ${theme.colors.gray[600]};
+  color: ${colors.gray[600]};
 `;
+
+const actionGroupStyle = css`
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 10px 10px 10px;
+`;
+
+const iconButtonStyle = css`
+  background: none;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: ${colors.gray[500]};
+  ${typography.caption.md}
+  transition: background 0.15s;
+  &:hover {
+    background: ${colors.gray[200]};
+    color: ${colors.primary};
+  }
+`;
+
+//현재 테스트
 
 export default function CardList() {
   return (
     <section css={cardListStyle} aria-label='독서 목록'>
       <figure css={cardStyle}>
+        <Label isAbsolute top='8px' right='8px' status={BookStatus.COMPLETED} />
         <Image
           css={coverStyle}
-          src='https://image.aladin.co.kr/product/29241/6/cover500/k292836282_1.jpg'
+          src='https://image.aladin.co.kr/product/33000/68/coversum/k972937779_1.jpg'
           alt='불편한 편의점 표지'
-          width={230}
+          width={180}
           height={120}
           priority
         />
@@ -71,11 +102,12 @@ export default function CardList() {
         </figcaption>
       </figure>
       <figure css={cardStyle}>
+        <Label isAbsolute top='8px' right='8px' status={BookStatus.PAUSED} />
         <Image
           css={coverStyle}
-          src='https://image.aladin.co.kr/product/31520/6/cover500/k112935899_1.jpg'
+          src='https://image.aladin.co.kr/product/33000/68/coversum/k972937779_1.jpg'
           alt='세이노의 가르침 표지'
-          width={230}
+          width={180}
           height={120}
           priority
         />
@@ -85,11 +117,17 @@ export default function CardList() {
         </figcaption>
       </figure>
       <figure css={cardStyle}>
+        <Label
+          isAbsolute
+          top='8px'
+          right='8px'
+          status={BookStatus.WANT_TO_READ}
+        />
         <Image
           css={coverStyle}
-          src='https://image.aladin.co.kr/product/31214/6/cover500/k832935899_1.jpg'
+          src='https://image.aladin.co.kr/product/33000/68/coversum/k972937779_1.jpg'
           alt='역행자 표지'
-          width={230}
+          width={180}
           height={120}
           priority
         />
@@ -97,6 +135,16 @@ export default function CardList() {
           <div css={titleStyle}>역행자</div>
           <div css={authorStyle}>자청 · 웅진지식하우스</div>
         </figcaption>
+        <div css={actionGroupStyle}>
+          <button type='button' css={iconButtonStyle} aria-label='수정'>
+            <MdEdit />
+            작성하기
+          </button>
+          <button type='button' css={iconButtonStyle} aria-label='삭제'>
+            <MdDelete />
+            삭제하기
+          </button>
+        </div>
       </figure>
     </section>
   );

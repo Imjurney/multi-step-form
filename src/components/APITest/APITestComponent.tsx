@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import mediaQueries from '../../styles/mediaQueries';
 import Label from '../Label/Label';
 import { BookStatus } from '../../types/common/book-status';
+import CardList from '../Card/Card';
 
 const Container = styled.div`
   max-width: 800px;
@@ -167,6 +168,7 @@ export const APITestComponent = () => {
           📖 도서 검색
         </Button>
 
+        <CardList />
         <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#666' }}>
           <strong>검색 예시:</strong>
           <div style={{ marginTop: '0.5rem' }}>
@@ -207,10 +209,10 @@ export const APITestComponent = () => {
         </Section>
       )}
       <ArticleContainer>
-        <Label status={BookStatus.WANT_TO_READ} />
-        <Label status={BookStatus.READING} />
-        <Label status={BookStatus.COMPLETED} />
-        <Label status={BookStatus.PAUSED} />
+        <Label isAbsolute={false} status={BookStatus.WANT_TO_READ} />
+        <Label isAbsolute={false} status={BookStatus.READING} />
+        <Label isAbsolute={false} status={BookStatus.COMPLETED} />
+        <Label isAbsolute={false} status={BookStatus.PAUSED} />
       </ArticleContainer>
       {/* 응답 결과 */}
       {response && (

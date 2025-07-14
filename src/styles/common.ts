@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import mediaQueries from './mediaQueries';
 import colors from './color';
-import calcRemWithBase from '../utils/calcRemWithBase';
 import typography from './typography';
 
 const common = {
@@ -70,23 +69,12 @@ const common = {
     }
   `,
 
-  card: css`
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow:
-      0 1px 3px 0 rgba(0, 0, 0, 0.1),
-      0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    border: 1px solid ${colors.gray[200]};
-  `,
-
   input: css`
     width: 100%;
     padding: 12px 16px;
     border: 1px solid ${colors.gray[300]};
     border-radius: 8px;
-    font-size: ${calcRemWithBase(16)};
-    line-height: 1.5;
+    ${typography.input.md};
     color: ${colors.gray[900]};
     background-color: white;
     transition:
@@ -109,12 +97,15 @@ const common = {
       cursor: not-allowed;
     }
 
-    /* 애니메이션 감소 선호 시 트랜지션 제거 */
     ${mediaQueries.feature.reducedMotion} {
       transition: none;
     }
   `,
 
+  errorMessage: css`
+    color: ${colors.feedback.error};
+    ${typography.input.sm};
+  `,
   label: css`
     padding: 4px 8px;
     width: 64px;

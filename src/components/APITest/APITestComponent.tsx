@@ -1,75 +1,86 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import ky from 'ky';
 import styled from '@emotion/styled';
-import mediaQueries from '../../styles/mediaQueries';
-import Label from '../Label/Label';
+import { FormProvider, useForm } from 'react-hook-form';
+import RHInput from '@/components/RHInput/RHInput';
 import { BookStatus } from '../../types/common/book-status';
-import CardList from '../Card/Card';
+import Card from '../Card/Card';
+import { BookLayout } from '../Layout/Layout';
+import { Button } from '../Button/Button';
+import { theme } from '@/styles';
+import dynamic from 'next/dynamic';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+const schema = z.object({
+  username: z.string().min(1, '필수 입력').max(20, '최대 20자'),
+});
+const DevTool = dynamic(
+  () => import('@hookform/devtools').then(mod => mod.DevTool),
+  { ssr: false }
+);
 
+const { colors } = theme;
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 840px;
+  height: 70svh;
+  padding: 1rem;
+  border-radius: 16px;
   margin: 0 auto;
-  background: ${({ theme }) => theme.colors.gray[100]};
-`;
-
-const ArticleContainer = styled.article`
-  display: grid;
-
-  ${mediaQueries.tablet} {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-  gap: 1rem;
+  background: ${colors.gray[50]};
+  overflow-x: scroll;
 `;
 
 const Section = styled.div`
   margin-bottom: 2rem;
   width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.gray[200]};
+  border: 1px solid ${colors.gray[200]};
   border-radius: 8px;
-  background: ${({ theme }) => theme.colors.surface};
+  background: ${colors.surface};
 `;
-
-const Button = styled.button`
-  background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.brand[600]};
-  }
-
-  &:disabled {
-    background: ${({ theme }) => theme.colors.gray[400]};
-    cursor: not-allowed;
-  }
-`;
-
-const ResponseBox = styled.div``;
 
 const Input = styled.input`
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid ${({ theme }) => theme.colors.gray[300]};
+  border: 1px solid ${colors.gray[300]};
   border-radius: 6px;
   margin-bottom: 1rem;
   font-family: inherit;
 
   &:focus {
     outline: none;
-    border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.brand[100]};
+    border-color: ${colors.primary};
+    box-shadow: 0 0 0 3px ${colors.brand[100]};
   }
 `;
 
+const MyForm = () => {
+  const methods = useForm({ resolver: zodResolver(schema), mode: 'onChange' });
+
+  return (
+    <FormProvider {...methods}>
+      <form>
+        <RHInput
+          placeholder='사용자 이름을 입력하세요'
+          type='text'
+          name='username'
+          rules={{
+            required: '필수 입력',
+            maxLength: {
+              value: 20,
+              message: '최대 20자까지 입력 가능합니다.',
+            },
+          }}
+        />
+        <button type='submit'>제출</button>
+      </form>
+      {/* <DevTool control={methods.control} /> */}
+    </FormProvider>
+  );
+};
 export const APITestComponent = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [response, setResponse] = useState<any | null>(null);
+  const [_response, setResponse] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -142,18 +153,6 @@ export const APITestComponent = () => {
 
     return (
       <Section>
-        <div style={{ marginBottom: '1rem' }}>
-          <label
-            style={{
-              display: 'block',
-              marginBottom: '0.5rem',
-              fontWeight: '500',
-            }}
-          >
-            검색 유형:
-          </label>
-        </div>
-
         <Input
           type='text'
           placeholder='검색할 책 제목이나 저자명을 입력하세요 (예: 해리포터, 김영하)'
@@ -162,102 +161,70 @@ export const APITestComponent = () => {
         />
 
         <Button
+          variant='primary'
+          size='md'
           onClick={handleBookSearch}
           disabled={loading || !searchQuery.trim()}
         >
           📖 도서 검색
         </Button>
-
-        <CardList />
-        <div style={{ marginTop: '1rem', fontSize: '0.875rem', color: '#666' }}>
-          <strong>검색 예시:</strong>
-          <div style={{ marginTop: '0.5rem' }}>
-            • 제목 검색: &quot;해리포터&quot;, &quot;어린왕자&quot;,
-            &quot;1984&quot;
-            <br />
-            • 저자 검색: &quot;김영하&quot;, &quot;무라카미 하루키&quot;,
-            &quot;조지 오웰&quot;
-            <br />• 통합 검색: &quot;해리포터 롤링&quot;, &quot;어린왕자
-            생텍쥐페리&quot;
-          </div>
-        </div>
       </Section>
     );
   };
 
   return (
     <Container>
-      {testAladinAPI()}
-
-      {/* 로딩 상태 */}
-      {loading && (
-        <Section>
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <div
-              style={{
-                display: 'inline-block',
-                width: '32px',
-                height: '32px',
-                border: '3px solid #f3f3f3',
-                borderTop: '3px solid #0064FF',
-                borderRadius: '50%',
-                animation: 'spin 1s linear infinite',
-              }}
-            />
-            <p style={{ marginTop: '1rem' }}>API 호출 중...</p>
-          </div>
-        </Section>
-      )}
-      <ArticleContainer>
-        <Label isAbsolute={false} status={BookStatus.WANT_TO_READ} />
-        <Label isAbsolute={false} status={BookStatus.READING} />
-        <Label isAbsolute={false} status={BookStatus.COMPLETED} />
-        <Label isAbsolute={false} status={BookStatus.PAUSED} />
-      </ArticleContainer>
-      {/* 응답 결과 */}
-      {response && (
-        <Section>
-          <h3>📋 응답 결과</h3>
-          <div style={{ marginBottom: '1rem' }}>
-            <strong>상태 코드:</strong>
-            <span
-              style={{
-                color:
-                  response.status >= 200 && response.status < 300
-                    ? '#10B981'
-                    : '#EF4444',
-                marginLeft: '0.5rem',
-                fontWeight: 'bold',
-              }}
-            >
-              {response.status}
-            </span>
-          </div>
-
-          {response.error && (
-            <div style={{ marginBottom: '1rem' }}>
-              <strong style={{ color: '#EF4444' }}>에러:</strong>
-              <span style={{ marginLeft: '0.5rem', color: '#EF4444' }}>
-                {response.error}
-              </span>
-            </div>
-          )}
-
-          <strong>응답 데이터:</strong>
-          <ResponseBox></ResponseBox>
-        </Section>
-      )}
-
-      <style jsx>{`
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
+      <MyForm />
+      <BookLayout>
+        <Card
+          book={{
+            isbn: '9788936433862',
+            title: '해리포터와 마법사의 돌',
+            cover: 'https://image.aladin.co.kr/product/8936433862_01.jpg',
+            author: 'J.K. 롤링',
+            publisher: '문학수첩',
+            status: BookStatus.WANT_TO_READ,
+          }}
+          onEnterForm={() => {}}
+          onDelete={() => {}}
+        />
+        <Card
+          book={{
+            isbn: '9788936433862',
+            title: '해리포터와 마법사의 돌',
+            cover: 'https://image.aladin.co.kr/product/8936433862_01.jpg',
+            author: 'J.K. 롤링',
+            publisher: '문학수첩',
+            status: BookStatus.WANT_TO_READ,
+          }}
+          onEnterForm={() => {}}
+          onDelete={() => {}}
+        />
+        <Card
+          book={{
+            isbn: '9788936433862',
+            title: '해리포터와 마법사의 돌',
+            cover: 'https://image.aladin.co.kr/product/8936433862_01.jpg',
+            author: 'J.K. 롤링',
+            publisher: '문학수첩',
+            status: BookStatus.WANT_TO_READ,
+          }}
+          onEnterForm={() => {}}
+          onDelete={() => {}}
+        />
+        <Card
+          book={{
+            isbn: '9788936433862',
+            title: '해리포터와 마법사의 돌',
+            cover: 'https://image.aladin.co.kr/product/8936433862_01.jpg',
+            author: 'J.K. 롤링',
+            publisher: '문학수첩',
+            status: BookStatus.WANT_TO_READ,
+          }}
+          onEnterForm={() => {}}
+          onDelete={() => {}}
+        />
+      </BookLayout>
     </Container>
   );
 };

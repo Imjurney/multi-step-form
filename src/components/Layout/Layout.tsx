@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { theme } from '@/styles/index';
 import { PropsWithChildren } from 'react';
-import ProgressBar from '@/components/ProgressBar/ProgressBar';
+
 const { colors, mediaQueries, typography } = theme;
 interface LayoutProps {
   currentStep: number;
@@ -9,6 +9,40 @@ interface LayoutProps {
   title: string;
   subtitle: string;
 }
+
+export const Layout = ({
+  children,
+  title,
+  subtitle,
+}: Pick<PropsWithChildren<LayoutProps>, 'children' | 'title' | 'subtitle'>) => {
+  return (
+    <main css={containerStyle}>
+      <div css={WrapperStyle}>
+        <div css={CardStyle}>
+          {(title || subtitle) && (
+            <div css={headerStyle}>
+              {title && <h1 css={titleStyle}>{title}</h1>}
+              {subtitle && <p css={subtitleStyle}>{subtitle}</p>}
+            </div>
+          )}
+          {children}
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export const BookLayout = ({
+  children,
+}: {
+  children: PropsWithChildren<LayoutProps>['children'];
+}) => {
+  return (
+    <section css={cardListStyle} aria-label='독서 목록'>
+      {children}
+    </section>
+  );
+};
 
 const containerStyle = css`
   display: flex;
@@ -66,45 +100,13 @@ const subtitleStyle = css`
   color: ${colors.gray[600]};
 `;
 
-export const Layout = ({
-  children,
-  title,
-  subtitle,
-}: Pick<PropsWithChildren<LayoutProps>, 'children' | 'title' | 'subtitle'>) => {
-  return (
-    <main css={containerStyle}>
-      <div css={WrapperStyle}>
-        <div css={CardStyle}>
-          {(title || subtitle) && (
-            <div css={headerStyle}>
-              {title && <h1 css={titleStyle}>{title}</h1>}
-              {subtitle && <p css={subtitleStyle}>{subtitle}</p>}
-            </div>
-          )}
-          {children}
-        </div>
-      </div>
-    </main>
-  );
-};
+const cardListStyle = css`
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 16px;
+  width: 100%;
+`;
 
-export const StepLayout = ({
-  children,
-  currentStep = 1,
-  totalSteps = 5,
-  title = '도서 등록',
-  subtitle = '읽은 책의 정보를 단계별로 입력해주세요',
-}: PropsWithChildren<LayoutProps>) => {
-  return (
-    <Layout title={title} subtitle={subtitle}>
-      {totalSteps > 1 && (
-        <ProgressBar current={currentStep} total={totalSteps} />
-      )}
-
-      {children}
-    </Layout>
-  );
-};
-
+BookLayout.displayName = 'BookLayout';
 Layout.displayName = 'Layout';
-StepLayout.displayName = 'StepLayout';

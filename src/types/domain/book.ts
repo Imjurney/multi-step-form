@@ -1,11 +1,13 @@
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { BookStatusType } from '../common/book-status';
 
 export interface Book {
-  id: string;
+  isbn: string;
   title: string;
+  cover: string | StaticImport;
   author: string;
+  publisher: string;
   status: BookStatusType;
-  // ...기타 도메인 필드
 }
 
 export interface BookPostForm {

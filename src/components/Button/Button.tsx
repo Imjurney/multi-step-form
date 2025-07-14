@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { colors, commonStyles, typography } from '@/styles/theme';
+import { theme } from '@/styles';
 import { ReactNode, ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -14,6 +14,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   loading?: boolean;
 }
+
+const { colors, common, typography } = theme;
 
 const sizeStyles = {
   sm: css`
@@ -107,7 +109,7 @@ const variantStyles = {
  * 기본 버튼 스타일
  */
 const baseButtonStyle = css`
-  ${commonStyles.flexCenter};
+  ${common.flexCenter};
   gap: 8px;
   font-family: inherit;
   cursor: pointer;

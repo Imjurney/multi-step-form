@@ -7,20 +7,21 @@ const nextConfig: NextConfig = {
   compiler: {
     emotion: true,
   },
-  optimizeFonts: true,
-  async headers() {
-    return [
+  images: {
+    remotePatterns: [
       {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Link',
-            value:
-              '</https://static.toss.im/tps/main.css>; rel=preload; as=style',
-          },
-        ],
+        protocol: 'https',
+        hostname: 'image.aladin.co.kr',
+        port: '',
+        pathname: '/product/**',
       },
-    ];
+      {
+        protocol: 'https',
+        hostname: 'bookthumb-phinf.pstatic.net',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 };
 

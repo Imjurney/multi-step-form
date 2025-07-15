@@ -69,6 +69,17 @@ const common = {
     }
   `,
 
+  inputLabel: css`
+    color: ${colors.gray[900]};
+    ${typography.content.sm};
+
+    em {
+      color: ${colors.feedback.error};
+      font-style: normal;
+      font-weight: 500;
+    }
+  `,
+
   input: css`
     width: 100%;
     padding: 12px 16px;

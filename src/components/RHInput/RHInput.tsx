@@ -8,6 +8,8 @@ interface RHInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   type?: string;
   rules?: RegisterOptions;
+  label?: string;
+  required?: boolean;
 }
 
 const RHInput = ({ name, placeholder, type, rules, ...rest }: RHInputProps) => {
@@ -15,9 +17,18 @@ const RHInput = ({ name, placeholder, type, rules, ...rest }: RHInputProps) => {
     register,
     formState: { errors },
   } = useFormContext();
+
   const error = errors?.[name]?.message as string | undefined;
+
+  const { label, required } = rest;
   return (
     <div css={InputWrapper}>
+      {label && (
+        <label css={common.inputLabel} htmlFor={name}>
+          {required && <em>(*필수)</em>} {label || placeholder}
+        </label>
+      )}
+
       <input
         css={[common.input, error && ErrorStyledInput]}
         type={type}

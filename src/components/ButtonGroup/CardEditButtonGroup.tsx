@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '@/styles';
-import { BookStatusType } from '@/types/common/book-status';
+import { BookStatusType } from '@/types/common/bookStatus';
 
 const { colors, typography } = theme;
 

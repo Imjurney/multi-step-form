@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import {
-  statusLabelMap,
-  type BookStatusType,
-} from '@/types/common/book-status';
+import { statusLabelMap, type BookStatusType } from '@/types/common/bookStatus';
 import { css } from '@emotion/react';
 
 import styled from '@emotion/styled';

@@ -1,5 +1,5 @@
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
-import { BookStatusType } from '../common/book-status';
+import { BookStatusType } from '../common/bookStatus';
 
 export interface Book {
   isbn: string;

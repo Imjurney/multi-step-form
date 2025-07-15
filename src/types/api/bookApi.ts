@@ -1,4 +1,4 @@
-import { BookStatusType } from '../common/book-status';
+import { BookStatusType } from '../common/bookStatus';
 
 export interface BookApiResponse {
   id: string;

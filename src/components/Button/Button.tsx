@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, SerializedStyles } from '@emotion/react';
 import { theme } from '@/styles';
 import { ReactNode, ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
@@ -13,6 +13,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: IconPosition;
   fullWidth?: boolean;
   loading?: boolean;
+  addcss?: SerializedStyles;
 }
 
 const { colors, common, typography } = theme;
@@ -207,7 +208,7 @@ export const Button = ({
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   const isDisabled = disabled || loading;
-
+  const { addcss } = rest;
   const renderIcon = () => {
     if (!icon || loading) return null;
 
@@ -242,10 +243,10 @@ export const Button = ({
               `,
             ]
           : []),
+        ...(addcss ? [addcss] : []),
       ]}
       disabled={isDisabled}
       aria-disabled={isDisabled}
-      {...rest}
     >
       {loading && <LoadingSpinner size={size} />}
       {leftIcon}

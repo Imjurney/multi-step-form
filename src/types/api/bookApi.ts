@@ -6,3 +6,8 @@ export interface BookApiResponse {
   status: BookStatusType;
   // ...기타 API 응답 필드
 }
+
+export interface ClientQueryCommon {
+  query: string;
+  enabled: boolean;
+}

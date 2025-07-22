@@ -83,6 +83,7 @@ const common = {
   input: css`
     width: 100%;
     padding: 12px 16px;
+    flex: 1;
     border: 1px solid ${colors.gray[300]};
     border-radius: 8px;
     ${typography.input.md};

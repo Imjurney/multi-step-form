@@ -9,4 +9,13 @@ export const BookSchema = z.object({
   publisher: z.string(),
 });
 
+export const BookSearchResponseSchema = z.object({
+  books: z.array(BookSchema),
+  itemsPerPage: z.number(),
+  query: z.string(),
+  startIndex: z.number(),
+  totalResults: z.number(),
+});
+
 export type BookFromApi = z.infer<typeof BookSchema>;
+export type BookSearchResponse = z.infer<typeof BookSearchResponseSchema>;

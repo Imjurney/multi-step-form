@@ -51,6 +51,7 @@ const InputWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  width: 100%;
 `;
 
 const ErrorStyledInput = css`

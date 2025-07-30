@@ -22,7 +22,12 @@ export default function Home() {
       <Layout title='독서 목록' subtitle='나의 독서들을 기록해보세요.'>
         <div css={RegisterSection}>
           <Button
-            onClick={() => router.push('/register')}
+            onClick={() =>
+              router.push({
+                pathname: '/register',
+                query: { step: 1 },
+              })
+            }
             type='button'
             variant='primary'
             size='sm'

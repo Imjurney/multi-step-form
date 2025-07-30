@@ -232,6 +232,7 @@ export const Button = ({
 
   return (
     <button
+      type={rest.type || 'button'}
       css={[
         baseButtonStyle,
         sizeStyles[size],

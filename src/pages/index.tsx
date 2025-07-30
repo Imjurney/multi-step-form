@@ -2,12 +2,14 @@ import Head from 'next/head';
 import { Layout } from '@/components/Layout/Layout';
 import Button from '../components/Button/Button';
 import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
 
 const RegisterSection = css`
   display: flex;
   justify-content: flex-end;
 `;
 export default function Home() {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -20,6 +22,7 @@ export default function Home() {
       <Layout title='독서 목록' subtitle='나의 독서들을 기록해보세요.'>
         <div css={RegisterSection}>
           <Button
+            onClick={() => router.push('/register')}
             type='button'
             variant='primary'
             size='sm'

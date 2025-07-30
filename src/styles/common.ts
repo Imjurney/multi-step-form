@@ -17,12 +17,14 @@ const common = {
   `,
 
   flexColumn: css`
+    width: 100%;
     display: flex;
     flex-direction: column;
   `,
 
   container: css`
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     padding: 0 12px;
 
@@ -107,6 +109,24 @@ const common = {
       background-color: ${colors.gray[50]};
       color: ${colors.gray[500]};
       cursor: not-allowed;
+      &::placeholder {
+        color: ${colors.gray[300]};
+      }
+    }
+
+    &:read-only {
+      background-color: ${colors.gray[100]};
+      color: ${colors.gray[700]};
+
+      &::placeholder {
+        color: ${colors.gray[400]};
+      }
+
+      &:focus {
+        outline: none;
+        border-color: ${colors.gray[300]};
+        box-shadow: none;
+      }
     }
 
     ${mediaQueries.feature.reducedMotion} {
@@ -124,6 +144,15 @@ const common = {
     border-radius: 16px;
     text-align: center;
     ${typography.caption.sm};
+  `,
+
+  labelButton: css`
+    cursor: pointer;
+    &:active {
+      transform: scale(0.95);
+      opacity: 0.8;
+      transition: all 0.1s ease;
+    }
   `,
 } as const;
 

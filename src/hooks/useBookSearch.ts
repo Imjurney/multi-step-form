@@ -16,7 +16,7 @@ const useBookSearch = ({ query, enabled }: ClientQueryCommon) => {
         maxResults: '20',
         start: '1',
         sort: 'Accuracy',
-        cover: 'Small',
+        cover: 'Medium',
       });
       const raw = await ky
         .get(`/api/aladin/search?${params.toString()}`)
@@ -29,6 +29,9 @@ const useBookSearch = ({ query, enabled }: ClientQueryCommon) => {
     },
     enabled,
     retry: 1,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 };
 

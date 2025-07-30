@@ -5,9 +5,11 @@ export const BookSchema = z.object({
   title: z.string(),
   author: z.string(),
   cover: z.string().url(),
-  status: z.string(),
   publisher: z.string(),
+  pubDate: z.string(),
 });
+
+//staus 스키마 (상태)
 
 export const BookSearchResponseSchema = z.object({
   books: z.array(BookSchema),

@@ -14,6 +14,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   loading?: boolean;
   addcss?: SerializedStyles;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const { colors, common, typography } = theme;
@@ -208,7 +209,7 @@ export const Button = ({
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   const isDisabled = disabled || loading;
-  const { addcss } = rest;
+  const { addcss, onClick } = rest;
   const renderIcon = () => {
     if (!icon || loading) return null;
 
@@ -246,6 +247,7 @@ export const Button = ({
         ...(addcss ? [addcss] : []),
       ]}
       disabled={isDisabled}
+      onClick={onClick}
       aria-disabled={isDisabled}
     >
       {loading && <LoadingSpinner size={size} />}

@@ -7,62 +7,48 @@ import {
 import parseLocalDate from '@/utils/parseLocalDate';
 import { theme } from '@/styles';
 import RHInput from '@/components/RHInput/RHInput';
-import { IoSearchOutline } from 'react-icons/io5';
 import BookSearchResult from '@/components/BookSearchResult/BookSearchResult';
 import RHCalendarPicker from '@/components/RHcalendarPicker/RHcalendarPicker';
 import Button from '@/components/Button/Button';
-
 import { BookFromApi } from '@/types/domain/bookSchema';
 import Image from 'next/image';
 import Label from '@/components/Label/Label';
-import { useFormContext, UseFormReturn } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { BookInfoType } from '@/types/validate';
+import useBookSelection from '../../hooks/useBookSelection';
+import useBookStatus from '../../hooks/useBookStatus';
 
 const { common, typography, colors } = theme;
 
-interface Step01Props {
-  isSelectedBook: boolean;
-  isLoading: boolean;
-  bookList: BookFromApi[];
-  searchQuery: string;
-  selectedStatus: BookStatus;
-  handleSearch: () => void;
-  handleSelectBook: (
-    book: BookFromApi,
-    methods: UseFormReturn<BookInfoType>
-  ) => void;
-  handleResetBook: (methods: UseFormReturn<BookInfoType>) => void;
-  handleStatusClick: (status: BookStatusType) => void;
-  selectPubDate: string | null;
-}
-
-const Step01 = ({
-  isSelectedBook,
-  isLoading,
-  bookList,
-  searchQuery,
-  selectedStatus,
-  handleSearch,
-  handleSelectBook,
-  handleResetBook,
-  handleStatusClick,
-  selectPubDate,
-}: Step01Props) => {
+const Step01 = () => {
   const methods = useFormContext<BookInfoType>();
+  const { handleStatusClick, selectedStatus } = useBookStatus(); // Custom hook to manage book status
+  const { watch, control, formState } = methods;
+  const {
+    searchQuery,
+    handleSearch,
+    handleSelectBook,
+    handleResetBook,
+    bookList,
+    isLoading,
+    selectPubDate,
+  } = useBookSelection();
+
+  const isSelectedBook = !!watch('isbn');
   const renderCalendarCondition =
     selectPubDate && selectedStatus === BookStatus.WANT_TO_READ;
   const STATUS_LIST: BookStatusType[] = Object.keys(
     statusLabelMap
   ) as BookStatusType[];
 
-  const { watch, control, formState } = useFormContext<BookInfoType>();
-
   const startDate = watch('startDate');
+
   return (
     <>
       <div css={isSelectedBook ? BookBasicInfoLayout : null}>
         <div css={isSelectedBook ? HiddenLayout : BookBasicInfoSearchLayout}>
           <RHInput
+            onChange={e => handleSearch(e.target.value)}
             width={'100%'}
             type='search'
             label='도서명'
@@ -70,19 +56,6 @@ const Step01 = ({
             name={'search'}
             required={!isSelectedBook}
           />
-
-          <Button
-            disabled={isLoading}
-            onClick={handleSearch}
-            addcss={ButtonPosition}
-            type='button'
-            variant='primary'
-            size='sm'
-            iconPosition='left'
-            icon={<IoSearchOutline />}
-          >
-            검색
-          </Button>
         </div>
         <BookSearchResult
           isSelectedBook={isSelectedBook}
@@ -92,7 +65,7 @@ const Step01 = ({
           searchQuery={searchQuery}
         />
       </div>
-      <div css={isSelectedBook ? BookBasicInfoLayout : HiddenLayout}>
+      <div css={BookBasicInfoLayout}>
         <Image
           css={BookCoverStyle}
           src={methods.watch('cover') || '/placeholder.jpg'}
@@ -109,6 +82,7 @@ const Step01 = ({
           <RHInput label='도서명' type='text' readOnly name='title' />
           <RHInput label='저자' type='text' readOnly name='author' />
           <Button
+            disabled={!isSelectedBook}
             addcss={css`
               width: fit-content;
               align-self: flex-end;
@@ -139,7 +113,7 @@ const Step01 = ({
             <li
               css={common.labelButton}
               key={status}
-              onClick={() => handleStatusClick(status)}
+              onClick={() => handleStatusClick(status, methods)}
             >
               <Label isAbsolute={false} status={status} />
             </li>
@@ -219,12 +193,6 @@ const LabelLayout = css`
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
-`;
-
-const ButtonPosition = css`
-  position: absolute;
-  right: 12px;
-  top: 32px;
 `;
 
 const BookBasicInfoLayout = css`

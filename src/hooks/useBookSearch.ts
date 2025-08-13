@@ -4,30 +4,42 @@ import ky from 'ky';
 import type { ClientQueryCommon } from '@/types/api/bookApi';
 import { BookSearchResponseSchema } from '@/types/domain/bookSchema';
 
-// 알라딘 API 응답 타입 예시 (실제 구조에 맞게 수정)
-
 const useBookSearch = ({ query, enabled }: ClientQueryCommon) => {
   return useQuery({
     queryKey: ['aladinSearch', query],
-    queryFn: async () => {
+    queryFn: async ({ queryKey }) => {
+      const [, searchQuery] = queryKey;
+
+      if (
+        !searchQuery ||
+        typeof searchQuery !== 'string' ||
+        !searchQuery.trim()
+      ) {
+        throw new Error('검색어가 유효하지 않습니다.');
+      }
+
       const params = new URLSearchParams({
-        query: query,
+        query: searchQuery.trim(),
         queryType: 'Keyword',
         maxResults: '20',
         start: '1',
         sort: 'Accuracy',
         cover: 'Medium',
       });
+
       const raw = await ky
         .get(`/api/aladin/search?${params.toString()}`)
         .json();
       const parsed = BookSearchResponseSchema.safeParse(raw);
       if (!parsed.success) {
-        throw new Error('Invalid API response');
+        console.error('API 응답 파싱 실패:', parsed.error);
+        throw new Error(
+          `API 응답 형식이 올바르지 않습니다: ${parsed.error.message}`
+        );
       }
       return parsed.data;
     },
-    enabled,
+    enabled: enabled && Boolean(query?.trim()),
     retry: 1,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

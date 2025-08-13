@@ -29,7 +29,6 @@ const RHTextarea = ({
     formState: { errors },
   } = useFormContext();
 
-  // 현재 입력된 글자 수 추적
   const value = watch(name) ?? '';
   const length = value.length;
 
@@ -57,7 +56,7 @@ const RHTextarea = ({
           {length} / {maxLength}
         </span>
       </div>
-      {error && (
+      {error && typeof error === 'string' && error.trim() && (
         <span id={`${name}-error`} css={common.errorMessage}>
           {error}
         </span>

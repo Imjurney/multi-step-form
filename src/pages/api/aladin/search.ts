@@ -27,6 +27,7 @@ interface AladinBook {
   fixedPrice: boolean;
   seriesInfo: unknown;
   subInfo: unknown;
+  totalPage: number;
 }
 
 export default async function handler(
@@ -93,6 +94,7 @@ export default async function handler(
         salesPoint: book.salesPoint,
         adult: book.adult,
         fixedPrice: book.fixedPrice,
+        totalPage: 128, // 예시
       })) || [];
 
     return res.status(200).json({

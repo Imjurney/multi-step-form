@@ -6,10 +6,15 @@ import { BookFromApi } from '../types/domain/bookSchema';
 import { BookInfoType } from '../types/validate';
 import updateBookInfoFields from '../utils/updateBookInfoFields';
 import useBookSearch from './useBookSearch';
+import { useAtom } from 'jotai';
+import formAtom from '../atom/form';
 
 const useBookSelection = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectPubDate, setSelectPubDate] = useState<string | null>(null);
+  const [formState] = useAtom(formAtom);
+  const [selectPubDate, setSelectPubDate] = useState<string | null>(
+    formState.pubDate || null
+  );
 
   const { data, isLoading } = useBookSearch({
     query: searchQuery,
@@ -30,8 +35,9 @@ const useBookSelection = () => {
       updateBookInfoFields(methods, book);
       setSearchQuery('');
       setSelectPubDate(book.pubDate);
+      methods.setValue('pubDate', book.pubDate);
     },
-    []
+    [selectPubDate]
   );
 
   const handleResetBook = useCallback(
@@ -46,11 +52,11 @@ const useBookSelection = () => {
   return {
     searchQuery,
     selectPubDate,
-    bookList: data?.books || [],
-    isLoading,
+    bookList: data ? data.books : [],
     handleSearch,
     handleSelectBook,
     handleResetBook,
+    isLoading,
   };
 };
 

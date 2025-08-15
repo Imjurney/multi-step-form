@@ -7,6 +7,7 @@ import { BookSearchResponseSchema } from '@/types/domain/bookSchema';
 const useBookSearch = ({ query, enabled }: ClientQueryCommon) => {
   return useQuery({
     queryKey: ['aladinSearch', query],
+
     queryFn: async ({ queryKey }) => {
       const [, searchQuery] = queryKey;
 
@@ -24,12 +25,14 @@ const useBookSearch = ({ query, enabled }: ClientQueryCommon) => {
         maxResults: '20',
         start: '1',
         sort: 'Accuracy',
-        cover: 'Medium',
+        cover: 'MidBig',
       });
 
       const raw = await ky
         .get(`/api/aladin/search?${params.toString()}`)
         .json();
+
+      console.error('API 응답:', raw);
       const parsed = BookSearchResponseSchema.safeParse(raw);
       if (!parsed.success) {
         console.error('API 응답 파싱 실패:', parsed.error);

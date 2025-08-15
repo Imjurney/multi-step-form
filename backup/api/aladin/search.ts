@@ -75,6 +75,7 @@ export default async function handler(
 
     const data = await response.json();
 
+    console.log('알라딘 API 응답:', data);
     // 응답 데이터 정리
     const books =
       data.item?.map((book: AladinBook) => ({

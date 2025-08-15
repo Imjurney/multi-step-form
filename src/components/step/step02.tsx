@@ -54,5 +54,7 @@ const Layout = css`
   ${common.flexColumn};
   gap: 16px;
   width: 100%;
+  justify-content: space-evenly;
+  height: 30svh;
 `;
 export default Step02;

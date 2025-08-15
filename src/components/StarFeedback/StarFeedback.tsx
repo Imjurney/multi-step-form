@@ -1,10 +1,9 @@
 import Rate from 'rc-rate';
 import 'rc-rate/assets/index.css';
-
 import { css } from '@emotion/react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { theme } from '@/styles';
-import RHTextarea from '../RHTextarea/RHTextarea';
+
 const { colors, typography } = theme;
 
 interface StarProps {
@@ -17,30 +16,7 @@ const StarFeedBack = ({
   label = '평점',
   required = false,
 }: StarProps) => {
-  const { control, watch } = useFormContext();
-
-  const rating = watch(name);
-
-  const placeholder = (rating: number) => {
-    switch (rating) {
-      case 0:
-      case 0.5:
-      case 1:
-        return '어떤점이 아쉬웠나요? 피드백을 남겨주세요.';
-      case 1.5:
-      case 2:
-      case 2.5:
-      case 3:
-      case 3.5:
-      case 4:
-      case 4.5:
-        return '(선택) 어떤 점이 좋았나요?';
-      case 5:
-        return '어떤 점이 좋았나요? 피드백을 남겨주세요.';
-      default:
-        return '피드백을 남겨주세요.';
-    }
-  };
+  const { control } = useFormContext();
 
   return (
     <div css={Layout}>
@@ -93,7 +69,7 @@ const StarFeedBack = ({
         />
       </div>
 
-      <RHTextarea name='feedback' placeholder={placeholder(rating)} />
+      {/* <RHTextarea name='feedback' placeholder={placeholder(rating)} /> */}
     </div>
   );
 };
@@ -101,7 +77,7 @@ const StarFeedBack = ({
 const Layout = css`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+
   width: 100%;
 `;
 

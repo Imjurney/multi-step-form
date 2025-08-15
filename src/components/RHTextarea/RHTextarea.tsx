@@ -1,6 +1,7 @@
 import { useFormContext, RegisterOptions } from 'react-hook-form';
 import { theme } from '@/styles';
 import { css } from '@emotion/react';
+import { useEffect } from 'react';
 
 const { common, typography, colors } = theme;
 
@@ -12,6 +13,7 @@ interface RHTextareaProps
   label?: string;
   required?: boolean;
   maxLength?: number;
+  rating?: number; // 별점이 0.5, 1, 5점일 때 피드백 textarea에 포커스
 }
 
 const RHTextarea = ({
@@ -21,13 +23,22 @@ const RHTextarea = ({
   label,
   required,
   maxLength = 200,
+  rating,
   ...rest
 }: RHTextareaProps) => {
   const {
     register,
     watch,
+    setFocus,
     formState: { errors },
   } = useFormContext();
+
+  useEffect(() => {
+    if (rating && [0.5, 1, 5].includes(rating)) {
+      setFocus('feedback');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rating]);
 
   const value = watch(name) ?? '';
   const length = value.length;
@@ -48,7 +59,10 @@ const RHTextarea = ({
         aria-invalid={!!error}
         aria-describedby={error ? `${name}-error` : undefined}
         maxLength={maxLength}
-        {...register(name, { ...rules, maxLength })}
+        {...register(name, {
+          ...rules,
+          maxLength,
+        })}
         {...rest}
       />
       <div css={CharCountStyle}>
@@ -56,7 +70,7 @@ const RHTextarea = ({
           {length} / {maxLength}
         </span>
       </div>
-      {error && typeof error === 'string' && error.trim() && (
+      {error && (
         <span id={`${name}-error`} css={common.errorMessage}>
           {error}
         </span>

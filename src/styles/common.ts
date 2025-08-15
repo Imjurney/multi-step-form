@@ -115,11 +115,9 @@ const common = {
     }
 
     &:read-only {
-      background-color: ${colors.gray[100]};
-      color: ${colors.gray[700]};
-
       &::placeholder {
-        color: ${colors.gray[400]};
+        color: ${colors.gray[600]};
+        font-family: 'Toss Product Sans';
       }
 
       &:focus {

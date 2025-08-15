@@ -2,9 +2,9 @@ import type { BookFromApi } from '@/types/domain/bookSchema';
 import Image from 'next/image';
 import { css } from '@emotion/react';
 import { theme } from '@/styles';
+
 const { colors, typography, mediaQueries } = theme;
 interface BookSearchResultProps {
-  isLoading: boolean;
   books: BookFromApi[];
   searchQuery: string;
   onSelectBook: (book: BookFromApi) => void;
@@ -12,50 +12,37 @@ interface BookSearchResultProps {
 }
 
 const BookSearchResult = ({
-  isLoading,
   books,
-  searchQuery,
   onSelectBook,
   isSelectedBook,
 }: BookSearchResultProps) => {
-  if (isLoading) return <p css={SearchTextStyle}>로딩 중...</p>;
-  if (books.length > 0)
-    return (
-      <ul
-        css={!isSelectedBook ? bookListStyle : HiddenLayout}
-        aria-label='검색된 도서 목록'
-      >
-        {books.map(book => (
-          <li
-            onClick={() => onSelectBook(book)}
-            key={book.isbn}
-            css={bookItemStyle}
-          >
-            <Image
-              src={book.cover}
-              alt={book.title}
-              width={40}
-              height={60}
-              style={{ objectFit: 'cover', borderRadius: 4 }}
-            />
-            <div css={bookInfoStyle}>
-              <div css={bookTitleStyle}>{book.title}</div>
-              <div css={bookAuthorStyle}>{book.author}</div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    );
-  if (!isLoading && searchQuery)
-    return <p css={SearchTextStyle}> 검색 결과가 없습니다.</p>;
-  return null;
+  return (
+    <ul
+      css={!isSelectedBook ? bookListStyle : HiddenLayout}
+      aria-label='검색된 도서 목록'
+    >
+      {books.map(book => (
+        <li
+          onClick={() => onSelectBook(book)}
+          key={book.isbn}
+          css={bookItemStyle}
+        >
+          <Image
+            src={book.cover}
+            alt={book.title}
+            width={40}
+            height={60}
+            style={{ objectFit: 'cover', borderRadius: 4 }}
+          />
+          <div css={bookInfoStyle}>
+            <div css={bookTitleStyle}>{book.title}</div>
+            <div css={bookAuthorStyle}>{book.author}</div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
 };
-const SearchTextStyle = css`
-  ${typography.content.sm}
-  color: ${colors.gray[600]};
-  text-align: center;
-  margin-top: 16px;
-`;
 
 const HiddenLayout = css`
   display: none;
